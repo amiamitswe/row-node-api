@@ -10,6 +10,7 @@
 // dependencies
 const http = require('http');
 const url = require('url');
+const { StringDecoder } = require('string_decoder');
 
 // app object - module scaffolding
 const app = {};
@@ -41,6 +42,19 @@ app.handleReqRes = (req, res) => {
     const headerObj = req.headers;
     const queryStringObj = parsedUrl.query;
 
+    const decoder = new StringDecoder('utf-8');
+
+    let realData = '';
+
+    req.on('data', (buffer) => {
+        realData += decoder.write(buffer);
+    });
+
+    req.on('end', () => {
+        realData += decoder.end();
+        console.log(realData);
+        res.end('hello world !');
+    });
     // // some console for result
     // console.log(parsedUrl);
     // console.log(path);
@@ -49,7 +63,6 @@ app.handleReqRes = (req, res) => {
     // console.log(headerObj);
 
     // response handle
-    res.end('hello world !');
 };
 
 // start the server
