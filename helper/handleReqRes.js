@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable no-param-reassign */
 /*
  * Title: Handle request and response
  * Description: Handle request and response
@@ -10,6 +10,8 @@
 // dependencies
 const url = require('url');
 const { StringDecoder } = require('string_decoder');
+const routes = require('../routes');
+const { notFoundHandler } = require('../handlers/routeHandlers/notFoundHandler');
 
 // module scaffolding
 const handler = {};
@@ -18,17 +20,40 @@ handler.handleReqRes = (req, res) => {
     // request handling
     // gat the url and parse it
     const parsedUrl = url.parse(req.url, true);
-
     const path = parsedUrl.pathname;
-
     const trimmedPath = path.replace(/^\/+|\/+$/g, '');
     const method = req.method.toLowerCase();
     const headerObj = req.headers;
     const queryStringObj = parsedUrl.query;
 
+    const requestProperty = {
+        parsedUrl,
+        path,
+        trimmedPath,
+        method,
+        headerObj,
+        queryStringObj,
+    };
+
     const decoder = new StringDecoder('utf-8');
 
     let realData = '';
+
+    const chosenHandler = routes[trimmedPath] ? routes[trimmedPath] : notFoundHandler;
+
+    chosenHandler(requestProperty, (statusCode, payload) => {
+        statusCode = typeof statusCode === 'number' ? statusCode : 500;
+        payload = typeof payload === 'object' ? payload : {};
+
+        // stringify payload data
+        const payloadString = JSON.stringify(payload);
+
+        // write status code on head
+        res.writeHead(statusCode);
+
+        // end stringify payload by sending response
+        res.end(payloadString);
+    });
 
     req.on('data', (buffer) => {
         realData += decoder.write(buffer);
@@ -39,15 +64,6 @@ handler.handleReqRes = (req, res) => {
         console.log(realData);
         res.end('hello world !');
     });
-    // // some console for result
-    // console.log(parsedUrl);
-    // console.log(path);
-    // console.log(trimmedPath);
-    // console.log(method);
-    // console.log(headerObj);
-    // console.log(queryStringObj);
-
-    // response handle
 };
 
 module.exports = handler;
