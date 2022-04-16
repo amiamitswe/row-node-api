@@ -7,7 +7,9 @@
   "keywords": [],
   "description": "",
   "scripts": {
-    "start": "nodemon index",
+    "start": "NODE_ENV=development nodemon index",
+    "staging": "NODE_ENV=staging nodemon index",
+    "production": "NODE_ENV=production nodemon index",
     "test": "No test"
   },
   "devDependencies": {
