@@ -11,9 +11,12 @@
 const http = require('http');
 const { handleReqRes } = require('./helper/handleReqRes');
 const environment = require('./helper/environment');
+const data = require('./lib/data');
 
 // app object - module scaffolding
 const app = {};
+
+data.create('test', 'newFile', { name: 'amit', age: 26 }, (err) => console.log(err));
 
 // create server
 app.createServer = () => {
