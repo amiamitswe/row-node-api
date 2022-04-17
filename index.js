@@ -15,6 +15,7 @@ const data = require('./lib/data');
 // app object - module scaffolding
 const app = {};
 
+// // FIXME: will be removed
 // data.create(
 //     'test',
 //     'newFile',
@@ -24,6 +25,7 @@ const app = {};
 //     }
 // );
 
+// // FIXME: will be removed
 data.read('test', 'newFile', (err, result) => {
     console.log(err, result);
 });
