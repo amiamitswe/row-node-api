@@ -31,7 +31,12 @@ const app = {};
 // });
 
 // // FIXME: will be removed
-data.update('test', 'newFile', { name: 'abir' }, (err) => {
+// data.update('test', 'newFile', { name: 'abir' }, (err) => {
+//     console.log(err);
+// });
+
+// // FIXME: will be removed
+data.delete('test', 'newFile', (err) => {
     console.log(err);
 });
 
