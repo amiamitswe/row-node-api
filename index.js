@@ -15,14 +15,18 @@ const data = require('./lib/data');
 // app object - module scaffolding
 const app = {};
 
-data.create(
-    'test',
-    'newFile',
-    { name: 'amit', age: 26, occupation: 'Software Engineer' },
-    (err) => {
-        console.log(err);
-    }
-);
+// data.create(
+//     'test',
+//     'newFile',
+//     { name: 'amit', age: 26, occupation: 'Software Engineer' },
+//     (err) => {
+//         console.log(err);
+//     }
+// );
+
+data.read('test', 'newFile', (err, result) => {
+    console.log(err, result);
+});
 
 // create server
 app.createServer = () => {
