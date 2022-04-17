@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable no-param-reassign */
 /*
  * Title: Handle request and response
  * Description: Handle request and response

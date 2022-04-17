@@ -8,6 +8,9 @@
     "node": true
   },
   "rules": {
+    "comma-dangle": "off",
+    "no-param-reassign": "off",
+    "operator-linebreak": "off",
     "no-console": 0,
     "indent": 0,
     "linebreak-style": 0,

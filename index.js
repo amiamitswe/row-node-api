@@ -1,5 +1,4 @@
 /*
- *
  * Title: Uptime monitoring application
  * Description: Uptime monitoring application using row node
  * Author: Amit Samadder (by sumit shaha)
@@ -16,7 +15,14 @@ const data = require('./lib/data');
 // app object - module scaffolding
 const app = {};
 
-data.create('test', 'newFile', { name: 'amit', age: 26 }, (err) => console.log(err));
+data.create(
+    'test',
+    'newFile',
+    { name: 'amit', age: 26, occupation: 'Software Engineer' },
+    (err) => {
+        console.log(err);
+    }
+);
 
 // create server
 app.createServer = () => {

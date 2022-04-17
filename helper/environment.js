@@ -1,4 +1,3 @@
-/* eslint-disable operator-linebreak */
 /*
  * Title: Handle environments
  * Description: Handle all environment related things
