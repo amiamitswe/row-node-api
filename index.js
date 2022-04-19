@@ -10,7 +10,7 @@
 const http = require('http');
 const { handleReqRes } = require('./helper/handleReqRes');
 const environment = require('./helper/environment');
-const data = require('./lib/data');
+// const data = require('./lib/data');
 
 // app object - module scaffolding
 const app = {};
@@ -36,9 +36,9 @@ const app = {};
 // });
 
 // // FIXME: will be removed
-data.delete('test', 'newFile', (err) => {
-    console.log(err);
-});
+// data.delete('test', 'newFile', (err) => {
+//     console.log(err);
+// });
 
 // create server
 app.createServer = () => {

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /*
  * Title: Handle request and response
  * Description: Handle request and response

@@ -15,16 +15,19 @@ const environments = {};
 environments.staging = {
     port: 4000,
     envName: 'staging',
+    secreteKay: 'sfsfasfdfdsfdfgsdssfgdsfdgdsf',
 };
 
 environments.development = {
     port: 3000,
     envName: 'development',
+    secreteKay: 'ddfgdfghytjyujhgdfhgjhgfrrtge',
 };
 
 environments.production = {
     port: 6000,
     envName: 'production',
+    secreteKay: 'sfweregdfvbcbbfyhtythfgbfghfg',
 };
 
 // check which environment passed

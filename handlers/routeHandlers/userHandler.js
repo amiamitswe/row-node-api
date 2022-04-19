@@ -8,6 +8,8 @@
  */
 
 // dependencies
+const data = require('../../lib/data');
+const { hash } = require('../../helper/utilities');
 
 // module scaffolding
 const handler = {};
@@ -51,7 +53,26 @@ handler._users.post = (requestProperty, callback) => {
         typeof requestProperty.body.accept === 'boolean' ? requestProperty.body.accept : false;
 
     if (firstName && lastName && phone && password && accept) {
-        callback(200, { res: 'ok' });
+        data.read('users', phone, (err) => {
+            if (err) {
+                const userObject = {
+                    firstName,
+                    lastName,
+                    phone,
+                    password: hash(password),
+                    accept,
+                };
+                data.create('users', phone, userObject, (errCreate) => {
+                    if (!errCreate) {
+                        callback(200, { message: 'user create success' });
+                    } else {
+                        callback(500, { error: 'user creation failed' });
+                    }
+                });
+            } else {
+                callback(404, { error: 'user already exist' });
+            }
+        });
     } else {
         callback(400, { error: 'you have problem on your request' });
     }
