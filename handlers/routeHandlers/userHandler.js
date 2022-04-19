@@ -9,7 +9,7 @@
 
 // dependencies
 const data = require('../../lib/data');
-const { hash } = require('../../helper/utilities');
+const { hash, parseJSON } = require('../../helper/utilities');
 
 // module scaffolding
 const handler = {};
@@ -80,7 +80,24 @@ handler._users.post = (requestProperty, callback) => {
 
 // handler get request
 handler._users.get = (requestProperty, callback) => {
-    callback(200, { test: 'get' });
+    const { phone } = requestProperty.queryStringObj;
+
+    // check phone is valid and length is equal 11
+    if (typeof phone === 'string' && phone.trim().length === 11) {
+        // find the user
+        data.read('users', phone, (err, res) => {
+            if (!err && res) {
+                const userData = { ...parseJSON(res) };
+                delete userData.password;
+
+                callback(200, userData);
+            } else {
+                callback(404, { error: `no data found in this ${phone}` });
+            }
+        });
+    } else {
+        callback(404, { error: 'phone no is not correct' });
+    }
 };
 
 // module exports
