@@ -79,6 +79,7 @@ handler._users.post = (requestProperty, callback) => {
 };
 
 // handler get request
+// TODO: auth check
 handler._users.get = (requestProperty, callback) => {
     const { phone } = requestProperty.queryStringObj;
 
@@ -101,6 +102,7 @@ handler._users.get = (requestProperty, callback) => {
 };
 
 // handler put request for update
+// TODO: auth check
 handler._users.put = (requestProperty, callback) => {
     const { body } = requestProperty;
 
@@ -154,6 +156,32 @@ handler._users.put = (requestProperty, callback) => {
         }
     } else {
         callback(400, { error: 'phone no is not correct' });
+    }
+};
+
+// handle delete request
+// TODO: auth check
+handler._users.delete = (requestProperty, callback) => {
+    const { phone } = requestProperty.queryStringObj;
+
+    // check phone is valid and length is equal 11
+    if (typeof phone === 'string' && phone.trim().length === 11) {
+        // read data from fs
+        data.read('users', phone, (err, userData) => {
+            if (!err && userData) {
+                data.delete('users', phone, (deleteErr) => {
+                    if (!deleteErr) {
+                        callback(200, { message: 'user deleted successfully' });
+                    } else {
+                        callback(500, { error: 'some thing wrong' });
+                    }
+                });
+            } else {
+                callback(404, { error: 'user not found' });
+            }
+        });
+    } else {
+        callback(400, { error: 'phone number is incorrect' });
     }
 };
 
