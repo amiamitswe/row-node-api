@@ -100,5 +100,62 @@ handler._users.get = (requestProperty, callback) => {
     }
 };
 
+// handler put request for update
+handler._users.put = (requestProperty, callback) => {
+    const { body } = requestProperty;
+
+    const phone =
+        typeof body.phone === 'string' && body.phone.trim().length === 11 ? body.phone : false;
+
+    const firstName =
+        typeof body.fName === 'string' && body.fName.trim().length > 0 ? body.fName : false;
+
+    const lastName =
+        typeof body.lName === 'string' && body.lName.trim().length > 0 ? body.lName : false;
+
+    const password =
+        typeof body.password === 'string' && body.password.trim().length > 0
+            ? body.password
+            : false;
+
+    // check phone is valid and length is equal 11
+    if (phone) {
+        if (firstName || lastName || password) {
+            // read data from fs
+            data.read('users', phone, (err, userData) => {
+                // copy data and marse to json
+                const updateData = { ...parseJSON(userData) };
+
+                if (!err && userData) {
+                    if (firstName) {
+                        updateData.firstName = firstName;
+                    }
+                    if (lastName) {
+                        updateData.lastName = lastName;
+                    }
+                    if (password) {
+                        updateData.password = hash(password);
+                    }
+
+                    // update data
+                    data.update('users', phone, updateData, (updateErr) => {
+                        if (!updateErr) {
+                            callback(200, { message: 'user update success' });
+                        } else {
+                            callback(500, { error: 'there is a problem on server' });
+                        }
+                    });
+                } else {
+                    callback(404, { error: 'no user exist' });
+                }
+            });
+        } else {
+            callback(400, { error: 'you have problem on your request' });
+        }
+    } else {
+        callback(400, { error: 'phone no is not correct' });
+    }
+};
+
 // module exports
 module.exports = handler;
