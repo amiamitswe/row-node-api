@@ -37,5 +37,31 @@ utilities.hash = (str) => {
     return false;
 };
 
+/*
+ * Date&Time: 25/04/2022 - 01:01:58
+ * Update Description: add token generator
+ */
+
+utilities.createRandomString = (strLength) => {
+    const length = typeof strLength === 'number' && strLength > 0 ? strLength : false;
+
+    if (length) {
+        const possibleCharacters = 'abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        let randomString = '';
+
+        for (let i = 0; i < length; i += 1) {
+            const randomCharacters = possibleCharacters.charAt(
+                Math.floor(Math.random() * possibleCharacters.length)
+            );
+
+            randomString += randomCharacters;
+        }
+
+        return randomString;
+    }
+    return false;
+};
+
 // module exports
 module.exports = utilities;

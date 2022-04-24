@@ -15,7 +15,7 @@ const environment = require('./helper/environment');
 // app object - module scaffolding
 const app = {};
 
-// // FIXME: will be removed
+// // TODO: will be removed
 // data.create(
 //     'test',
 //     'newFile',
@@ -25,17 +25,17 @@ const app = {};
 //     }
 // );
 
-// // FIXME: will be removed
+// // TODO: will be removed
 // data.read('test', 'newFile', (err, result) => {
 //     console.log(err, result);
 // });
 
-// // FIXME: will be removed
+// // TODO: will be removed
 // data.update('test', 'newFile', { name: 'abir' }, (err) => {
 //     console.log(err);
 // });
 
-// // FIXME: will be removed
+// // TODO: will be removed
 // data.delete('test', 'newFile', (err) => {
 //     console.log(err);
 // });

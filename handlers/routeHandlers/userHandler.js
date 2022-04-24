@@ -126,9 +126,9 @@ handler._users.put = (requestProperty, callback) => {
             // read data from fs
             data.read('users', phone, (err, userData) => {
                 // copy data and marse to json
-                const updateData = { ...parseJSON(userData) };
 
                 if (!err && userData) {
+                    const updateData = { ...parseJSON(userData) };
                     if (firstName) {
                         updateData.firstName = firstName;
                     }
