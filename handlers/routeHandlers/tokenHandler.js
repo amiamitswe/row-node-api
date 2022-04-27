@@ -48,7 +48,7 @@ handler._token.post = (requestProperty, callback) => {
 
                 if (matchPassword) {
                     const tokenId = createRandomString(50);
-                    const expireIn = new Date() + 60 * 60 * 1000;
+                    const expireIn = Date.now() + 60 * 60 * 1000;
                     const tokenObject = {
                         phone,
                         tokenId,
@@ -77,7 +77,7 @@ handler._token.post = (requestProperty, callback) => {
 handler._token.get = (requestProperty, callback) => {
     const { tokenId } = requestProperty.queryStringObj;
 
-    if (typeof tokenId === 'string' && tokenId.trim().length > 0) {
+    if (typeof tokenId === 'string' && tokenId.trim().length === 50) {
         data.read('tokens', tokenId, (err, tokenData) => {
             if (!err && tokenData) {
                 const finalTokenData = { ...parseJSON(tokenData) };
@@ -92,7 +92,42 @@ handler._token.get = (requestProperty, callback) => {
 };
 
 // handle put request
-handler._token.put = (requestProperty, callback) => {};
+handler._token.put = (requestProperty, callback) => {
+    const { body } = requestProperty;
+
+    const tokenId =
+        typeof body.tokenId === 'string' && body.tokenId.trim().length === 50
+            ? body.tokenId
+            : false;
+
+    const extend = !!(typeof body.extend === 'boolean' && body.extend === true);
+
+    if (tokenId && extend) {
+        data.read('tokens', tokenId, (err, tokenData) => {
+            if (!err && tokenData) {
+                const finalTokenData = { ...parseJSON(tokenData) };
+
+                if (finalTokenData.expireIn > Date.now()) {
+                    finalTokenData.expireIn = Date.now() + 60 * 60 * 1000;
+
+                    data.update('tokens', tokenId, finalTokenData, (err1) => {
+                        if (!err1) {
+                            callback(200, { message: 'token update successfully' });
+                        } else {
+                            callback(500, { error: 'there is a problem on server' });
+                        }
+                    });
+                } else {
+                    callback(404, { error: 'token already expired' });
+                }
+            } else {
+                callback(404, { error: 'no data found' });
+            }
+        });
+    } else {
+        callback(404, { error: 'token id invalid or not permit to extend' });
+    }
+};
 
 // handle delete request
 handler._token.delete = (requestProperty, callback) => {};
