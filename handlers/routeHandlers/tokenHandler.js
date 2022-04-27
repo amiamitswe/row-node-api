@@ -74,7 +74,22 @@ handler._token.post = (requestProperty, callback) => {
 };
 
 // handle get request
-handler._token.get = (requestProperty, callback) => {};
+handler._token.get = (requestProperty, callback) => {
+    const { tokenId } = requestProperty.queryStringObj;
+
+    if (typeof tokenId === 'string' && tokenId.trim().length > 0) {
+        data.read('tokens', tokenId, (err, tokenData) => {
+            if (!err && tokenData) {
+                const finalTokenData = { ...parseJSON(tokenData) };
+                callback(200, finalTokenData);
+            } else {
+                callback(404, { error: `no data found in this ${tokenId}` });
+            }
+        });
+    } else {
+        callback(404, { error: 'Invalid token id' });
+    }
+};
 
 // handle put request
 handler._token.put = (requestProperty, callback) => {};
