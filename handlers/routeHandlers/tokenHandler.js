@@ -130,7 +130,27 @@ handler._token.put = (requestProperty, callback) => {
 };
 
 // handle delete request
-handler._token.delete = (requestProperty, callback) => {};
+handler._token.delete = (requestProperty, callback) => {
+    const { tokenId } = requestProperty.queryStringObj;
+
+    if (typeof tokenId === 'string' && tokenId.trim().length === 50) {
+        data.read('tokens', tokenId, (err, tokenData) => {
+            if (!err && tokenData) {
+                data.delete('tokens', tokenId, (deleteErr) => {
+                    if (!deleteErr) {
+                        callback(200, { message: 'token delete success' });
+                    } else {
+                        callback(500, { error: 'there is a problem on server' });
+                    }
+                });
+            } else {
+                callback(404, { error: `no data found in this ${tokenId}` });
+            }
+        });
+    } else {
+        callback(404, { error: 'token id invalid' });
+    }
+};
 
 // module exports
 module.exports = handler;
