@@ -152,5 +152,25 @@ handler._token.delete = (requestProperty, callback) => {
     }
 };
 
+/*
+ * Date&Time: 02/06/2022 - 00:40:36
+ * Update Description: add token verify handler
+ */
+// handle token verify
+handler._token.verify = (tokenId, phone, callback) => {
+    data.read('tokens', tokenId, (err, tokenData) => {
+        if (!err && tokenData) {
+            const formatTokenData = { ...parseJSON(tokenData) };
+            if (formatTokenData.phone === phone && formatTokenData.expireIn > Date.now()) {
+                callback(true);
+            } else {
+                callback(false);
+            }
+        } else {
+            callback(false);
+        }
+    });
+};
+
 // module exports
 module.exports = handler;

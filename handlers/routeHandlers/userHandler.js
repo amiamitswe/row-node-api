@@ -10,6 +10,7 @@
 // dependencies
 const data = require('../../lib/data');
 const { hash, parseJSON } = require('../../helper/utilities');
+const tokenHandler = require('./tokenHandler');
 
 // module scaffolding
 const handler = {};
@@ -83,17 +84,27 @@ handler._users.post = (requestProperty, callback) => {
 handler._users.get = (requestProperty, callback) => {
     const { phone } = requestProperty.queryStringObj;
 
+    const tokenID =
+        typeof requestProperty.headerObj.token === 'string'
+            ? requestProperty.headerObj.token
+            : false;
     // check phone is valid and length is equal 11
     if (typeof phone === 'string' && phone.trim().length === 11) {
-        // find the user
-        data.read('users', phone, (err, res) => {
-            if (!err && res) {
-                const userData = { ...parseJSON(res) };
-                delete userData.password;
+        tokenHandler._token.verify(tokenID, phone, (tokenRes) => {
+            if (tokenRes) {
+                // find the user
+                data.read('users', phone, (err, res) => {
+                    if (!err && res) {
+                        const userData = { ...parseJSON(res) };
+                        delete userData.password;
 
-                callback(200, userData);
+                        callback(200, userData);
+                    } else {
+                        callback(404, { error: `no data found in this ${phone}` });
+                    }
+                });
             } else {
-                callback(404, { error: `no data found in this ${phone}` });
+                callback(403, { error: 'you are not authenticate' });
             }
         });
     } else {
