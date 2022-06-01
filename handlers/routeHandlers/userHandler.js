@@ -80,7 +80,6 @@ handler._users.post = (requestProperty, callback) => {
 };
 
 // handler get request
-// TODO: auth check
 handler._users.get = (requestProperty, callback) => {
     const { phone } = requestProperty.queryStringObj;
 
@@ -113,7 +112,6 @@ handler._users.get = (requestProperty, callback) => {
 };
 
 // handler put request for update
-// TODO: auth check
 handler._users.put = (requestProperty, callback) => {
     const { body } = requestProperty;
 
@@ -131,40 +129,51 @@ handler._users.put = (requestProperty, callback) => {
             ? body.password
             : false;
 
+    const tokenID =
+        typeof requestProperty.headerObj.token === 'string'
+            ? requestProperty.headerObj.token
+            : false;
+
     // check phone is valid and length is equal 11
     if (phone) {
-        if (firstName || lastName || password) {
-            // read data from fs
-            data.read('users', phone, (err, userData) => {
-                // copy data and marse to json
+        tokenHandler._token.verify(tokenID, phone, (tokenRes) => {
+            if (tokenRes) {
+                if (firstName || lastName || password) {
+                    // read data from fs
+                    data.read('users', phone, (err, userData) => {
+                        // copy data and marse to json
 
-                if (!err && userData) {
-                    const updateData = { ...parseJSON(userData) };
-                    if (firstName) {
-                        updateData.firstName = firstName;
-                    }
-                    if (lastName) {
-                        updateData.lastName = lastName;
-                    }
-                    if (password) {
-                        updateData.password = hash(password);
-                    }
+                        if (!err && userData) {
+                            const updateData = { ...parseJSON(userData) };
+                            if (firstName) {
+                                updateData.firstName = firstName;
+                            }
+                            if (lastName) {
+                                updateData.lastName = lastName;
+                            }
+                            if (password) {
+                                updateData.password = hash(password);
+                            }
 
-                    // update data
-                    data.update('users', phone, updateData, (updateErr) => {
-                        if (!updateErr) {
-                            callback(200, { message: 'user update success' });
+                            // update data
+                            data.update('users', phone, updateData, (updateErr) => {
+                                if (!updateErr) {
+                                    callback(200, { message: 'user update success' });
+                                } else {
+                                    callback(500, { error: 'there is a problem on server' });
+                                }
+                            });
                         } else {
-                            callback(500, { error: 'there is a problem on server' });
+                            callback(404, { error: 'no user exist' });
                         }
                     });
                 } else {
-                    callback(404, { error: 'no user exist' });
+                    callback(400, { error: 'you have problem on your request' });
                 }
-            });
-        } else {
-            callback(400, { error: 'you have problem on your request' });
-        }
+            } else {
+                callback(403, { error: 'you are not authenticate' });
+            }
+        });
     } else {
         callback(400, { error: 'phone no is not correct' });
     }
@@ -174,21 +183,31 @@ handler._users.put = (requestProperty, callback) => {
 // TODO: auth check
 handler._users.delete = (requestProperty, callback) => {
     const { phone } = requestProperty.queryStringObj;
+    const tokenID =
+        typeof requestProperty.headerObj.token === 'string'
+            ? requestProperty.headerObj.token
+            : false;
 
     // check phone is valid and length is equal 11
     if (typeof phone === 'string' && phone.trim().length === 11) {
-        // read data from fs
-        data.read('users', phone, (err, userData) => {
-            if (!err && userData) {
-                data.delete('users', phone, (deleteErr) => {
-                    if (!deleteErr) {
-                        callback(200, { message: 'user deleted successfully' });
+        tokenHandler._token.verify(tokenID, phone, (tokenRes) => {
+            if (tokenRes) {
+                // read data from fs
+                data.read('users', phone, (err, userData) => {
+                    if (!err && userData) {
+                        data.delete('users', phone, (deleteErr) => {
+                            if (!deleteErr) {
+                                callback(200, { message: 'user deleted successfully' });
+                            } else {
+                                callback(500, { error: 'some thing wrong' });
+                            }
+                        });
                     } else {
-                        callback(500, { error: 'some thing wrong' });
+                        callback(404, { error: 'user not found' });
                     }
                 });
             } else {
-                callback(404, { error: 'user not found' });
+                callback(403, { error: 'you are not authenticate' });
             }
         });
     } else {
