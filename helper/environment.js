@@ -16,18 +16,21 @@ environments.staging = {
     port: 4000,
     envName: 'staging',
     secreteKay: 'sfsfasfdfdsfdfgsdssfgdsfdgdsf',
+    maxLimit: 5,
 };
 
 environments.development = {
     port: 3000,
     envName: 'development',
     secreteKay: 'ddfgdfghytjyujhgdfhgjhgfrrtge',
+    maxLimit: 5,
 };
 
 environments.production = {
     port: 6000,
     envName: 'production',
     secreteKay: 'sfweregdfvbcbbfyhtythfgbfghfg',
+    maxLimit: 5,
 };
 
 // check which environment passed

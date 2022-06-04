@@ -180,7 +180,6 @@ handler._users.put = (requestProperty, callback) => {
 };
 
 // handle delete request
-// TODO: auth check
 handler._users.delete = (requestProperty, callback) => {
     const { phone } = requestProperty.queryStringObj;
     const tokenID =
