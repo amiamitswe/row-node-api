@@ -11,12 +11,12 @@
 const handler = {};
 
 handler.sampleHandler = (requestProperty, callBack) => {
-    console.log(requestProperty);
+  console.log(requestProperty);
 
-    callBack(200, {
-        message: 'This is sample handler api response',
-        data: requestProperty.queryStringObj,
-    });
+  callBack(200, {
+    message: 'This is sample handler api response',
+    data: requestProperty.queryStringObj,
+  });
 };
 
 module.exports = handler;

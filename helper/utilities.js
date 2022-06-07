@@ -16,25 +16,25 @@ const utilities = {};
 
 // parse json data from string data
 utilities.parseJSON = (jsonString) => {
-    let outputData;
+  let outputData;
 
-    try {
-        outputData = JSON.parse(jsonString);
-    } catch {
-        outputData = {};
-    }
+  try {
+    outputData = JSON.parse(jsonString);
+  } catch {
+    outputData = {};
+  }
 
-    return outputData;
+  return outputData;
 };
 
 // hash string data
 utilities.hash = (str) => {
-    if (typeof str === 'string' && str.length > 0) {
-        const hash = crypto.createHmac('sha256', environment.secreteKay).update(str).digest('hex');
-        return hash;
-    }
+  if (typeof str === 'string' && str.length > 0) {
+    const hash = crypto.createHmac('sha256', environment.secreteKay).update(str).digest('hex');
+    return hash;
+  }
 
-    return false;
+  return false;
 };
 
 /*
@@ -43,24 +43,24 @@ utilities.hash = (str) => {
  */
 
 utilities.createRandomString = (strLength) => {
-    const length = typeof strLength === 'number' && strLength > 0 ? strLength : false;
+  const length = typeof strLength === 'number' && strLength > 0 ? strLength : false;
 
-    if (length) {
-        const possibleCharacters = 'abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  if (length) {
+    const possibleCharacters = 'abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
-        let randomString = '';
+    let randomString = '';
 
-        for (let i = 0; i < length; i += 1) {
-            const randomCharacters = possibleCharacters.charAt(
-                Math.floor(Math.random() * possibleCharacters.length)
-            );
+    for (let i = 0; i < length; i += 1) {
+      const randomCharacters = possibleCharacters.charAt(
+        Math.floor(Math.random() * possibleCharacters.length)
+      );
 
-            randomString += randomCharacters;
-        }
-
-        return randomString;
+      randomString += randomCharacters;
     }
-    return false;
+
+    return randomString;
+  }
+  return false;
 };
 
 // module exports

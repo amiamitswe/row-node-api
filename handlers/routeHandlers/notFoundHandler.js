@@ -10,9 +10,9 @@
 const handler = {};
 
 handler.notFoundHandler = (requestProperty, callBack) => {
-    callBack(404, {
-        message: 'this is 404 not found message',
-    });
+  callBack(404, {
+    message: 'this is 404 not found message',
+  });
 };
 
 module.exports = handler;

@@ -13,35 +13,35 @@
 const environments = {};
 
 environments.staging = {
-    port: 4000,
-    envName: 'staging',
-    secreteKay: 'sfsfasfdfdsfdfgsdssfgdsfdgdsf',
-    maxLimit: 5,
+  port: 4000,
+  envName: 'staging',
+  secreteKay: 'sfsfasfdfdsfdfgsdssfgdsfdgdsf',
+  maxLimit: 5,
 };
 
 environments.development = {
-    port: 3000,
-    envName: 'development',
-    secreteKay: 'ddfgdfghytjyujhgdfhgjhgfrrtge',
-    maxLimit: 5,
+  port: 3000,
+  envName: 'development',
+  secreteKay: 'ddfgdfghytjyujhgdfhgjhgfrrtge',
+  maxLimit: 5,
 };
 
 environments.production = {
-    port: 6000,
-    envName: 'production',
-    secreteKay: 'sfweregdfvbcbbfyhtythfgbfghfg',
-    maxLimit: 5,
+  port: 6000,
+  envName: 'production',
+  secreteKay: 'sfweregdfvbcbbfyhtythfgbfghfg',
+  maxLimit: 5,
 };
 
 // check which environment passed
 const currentEnvironment =
-    typeof process.env.NODE_ENV === 'string' ? process.env.NODE_ENV : 'development';
+  typeof process.env.NODE_ENV === 'string' ? process.env.NODE_ENV : 'development';
 
 // export corresponding environment object
 const environmentToExport =
-    typeof environments[currentEnvironment] === 'object'
-        ? environments[currentEnvironment]
-        : environments.development;
+  typeof environments[currentEnvironment] === 'object'
+    ? environments[currentEnvironment]
+    : environments.development;
 
 // module exports
 module.exports = environmentToExport;

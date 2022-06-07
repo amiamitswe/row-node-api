@@ -42,11 +42,11 @@ const app = {};
 
 // create server
 app.createServer = () => {
-    const server = http.createServer(app.handleReqRes);
-    // listening server
-    server.listen(environment.port, () => {
-        console.log(`listening on port ${environment.port}`);
-    });
+  const server = http.createServer(app.handleReqRes);
+  // listening server
+  server.listen(environment.port, () => {
+    console.log(`listening on port ${environment.port}`);
+  });
 };
 
 // handle request and response
