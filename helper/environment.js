@@ -17,6 +17,11 @@ environments.staging = {
   envName: 'staging',
   secreteKay: 'sfsfasfdfdsfdfgsdssfgdsfdgdsf',
   maxLimit: 5,
+  twilio: {
+    formPhone: '+8812345676543',
+    accountSID: 'AC82cfb1288f5f2d1aa925cd7d4df295a6',
+    authToken: 'cec5c9983f5620a5849cf8ee0385262f',
+  },
 };
 
 environments.development = {
@@ -24,6 +29,11 @@ environments.development = {
   envName: 'development',
   secreteKay: 'ddfgdfghytjyujhgdfhgjhgfrrtge',
   maxLimit: 5,
+  twilio: {
+    formPhone: '+8812345676543',
+    accountSID: 'AC82cfb1288f5f2d1aa925cd7d4df295a6',
+    authToken: 'cec5c9983f5620a5849cf8ee0385262f',
+  },
 };
 
 environments.production = {
@@ -31,6 +41,11 @@ environments.production = {
   envName: 'production',
   secreteKay: 'sfweregdfvbcbbfyhtythfgbfghfg',
   maxLimit: 5,
+  twilio: {
+    formPhone: '+8812345676543',
+    accountSID: 'AC82cfb1288f5f2d1aa925cd7d4df295a6',
+    authToken: 'cec5c9983f5620a5849cf8ee0385262f',
+  },
 };
 
 // check which environment passed
